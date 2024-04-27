@@ -9,9 +9,16 @@ public class characterLoaderScript : MonoBehaviour
     private string urlCargaPersonaje = "http://www.ieslassalinas.org/APP/appCargaPersonaje.php";
     private nonVolatileData fakeSingleton = null;
     public RuntimeAnimatorController characterAnimatorController;
+    public Material myMaterial;
+    public Texture myTexture0;
+    public Texture myTexture1;
+    public Texture myTexture2;
+
+    Datos dato;
 
     private void Start()
     {
+
         if (fakeSingleton == null)
         {
             GameObject tempGobj = GameObject.Find("variableSaver");
@@ -24,6 +31,7 @@ public class characterLoaderScript : MonoBehaviour
         StartCoroutine(conectionMethod(fakeSingleton.GetDNI()));
     }
 
+    //Para con recoger los datos del personaje de cada alumno
     public IEnumerator conectionMethod(string NIE)
     {
         WWWForm form = new WWWForm();
@@ -41,16 +49,15 @@ public class characterLoaderScript : MonoBehaviour
                 Debug.Log("Respuesta del servidor: " + webRequest.downloadHandler.text);
                 string texto = correctString(webRequest.downloadHandler.text);
                 texto = texto.Replace("\\", "");
-                Datos dato = JsonUtility.FromJson<Datos>(texto);
-                Debug.Log("Escala: " + dato.escala + ", ColorHex: " + dato.colorHex);
-                globalScale = dato.escala;
-
-                // Una vez obtenida la escala, llamamos al método de instanciación
-                transformMethod();
+                dato = JsonUtility.FromJson<Datos>(texto);
+                Debug.Log("scale: " + dato.scale + ", hairColor: " + dato.hairColor + ", skin: " + dato.skin + ", race: " + dato.race + ", sex: " + dato.sex);
+                globalScale = dato.scale;
+                loadCharacter();
             }
         }
     }
 
+    //Para corregir el JSON
     public string correctString(string cadena)
     {
         string caracteresPermitidos = "{}\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:,";
@@ -65,16 +72,33 @@ public class characterLoaderScript : MonoBehaviour
         return cadenaModificada;
     }
 
-    public void transformMethod()
+    //Para cargar de los prefabs
+    public void loadCharacter()
     {
-        // Crea una instancia del prefab
+        //personaje
         GameObject instantiatedPrefab = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-
-        // Escala el objeto instanciado
-        Vector3 scale = new Vector3(globalScale , globalScale , globalScale );
+        Vector3 scale = new Vector3(globalScale, globalScale, globalScale);
         instantiatedPrefab.transform.localScale = scale;
 
-        // Asigna el AnimatorController al prefab
+        //skin
+        if (dato.skin == 0)
+        {
+            myMaterial.mainTexture = myTexture0;
+            Debug.Log("Se colocó la textura 0");
+        }
+        else if(dato.skin == 1)
+        {
+            myMaterial.mainTexture = myTexture1;
+            Debug.Log("Se colocó la textura 1");
+        }
+        else
+        {
+            myMaterial.mainTexture = myTexture2;
+            Debug.Log("Se colocó la textura 2");
+        }
+        instantiatedPrefab.AddComponent<MeshRenderer>().material = myMaterial;
+
+        //Animation
         Animator animator = instantiatedPrefab.GetComponent<Animator>();
         if (animator != null && characterAnimatorController != null)
         {
@@ -86,10 +110,14 @@ public class characterLoaderScript : MonoBehaviour
         }
     }
 
+    //Para dar formato a la estructura del JSON
     [System.Serializable]
     public class Datos
     {
-        public int escala;
-        public string colorHex;
+        public int scale;
+        public string hairColor;
+        public int skin;
+        public int race;
+        public int sex;
     }
 }

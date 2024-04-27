@@ -19,6 +19,7 @@ public class loginScript : MonoBehaviour
         StartCoroutine(SendDataToPHP());
     }
 
+    // Para hacer el inicio de sesion del alumno
     IEnumerator SendDataToPHP()
     {
         WWWForm form = new WWWForm();
@@ -53,6 +54,7 @@ public class loginScript : MonoBehaviour
         }
     }
 
+    //Para corregir el formato del JSON
     public string ModificarCadena(string cadena)
     {
         string caracteresPermitidos = "{}\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:,";

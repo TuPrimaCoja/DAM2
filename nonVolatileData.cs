@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class nonVolatileData : MonoBehaviour
 {
-    private string userDNI = "";
-    string userName = "";
-    GameObject theGameObject = null;
+    //Esta clase es para guardar variables que no se deben destruir a lo largo del transcurso del programa
 
+    private string userDNI = "";
     void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);
         Debug.Log("Ahora soy eterno!!!!");
     }
 
+
+    //Getters y Setters
     public void SetDNI(string theDni)
     {
         userDNI = theDni;

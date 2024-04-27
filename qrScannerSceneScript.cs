@@ -15,7 +15,7 @@ public class qrScannerScene : MonoBehaviour
     void Start()
     {
         var renderer = GetComponent<RawImage>();
-        webcamTexture = new WebCamTexture(512, 512);
+        webcamTexture = new WebCamTexture(1920, 1080);
 
         // Ajustar la rotación de la textura de la cámara
         webcamTexture.deviceName = GetDeviceName();
