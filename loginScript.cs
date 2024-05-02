@@ -6,11 +6,11 @@ using UnityEngine.UI;
 using System.IO;
 using UnityEngine.Networking;
 using TMPro;
+using System.Text.RegularExpressions;
 
 public class loginScript : MonoBehaviour
 {
     [SerializeField] nonVolatileData fakeSingleton;
-
     public TMP_InputField inputField1;
     public TMP_InputField inputField2;
     public string urlValidaUsuario = "http://www.ieslassalinas.org/APP/appValidaUsuario.php";
@@ -37,7 +37,8 @@ public class loginScript : MonoBehaviour
             else
             {
                 string responseText = www.downloadHandler.text;
-                if (!ModificarCadena(responseText).Equals("0"))
+                responseText = Regex.Replace(responseText, @"[^a-zA-Z0-9:\-{},;"" ]", "");
+                if (!responseText.Equals("0"))
                 {
                     Debug.Log("Usuario encontrado");
                     fakeSingleton.SetDNI(inputField1.text);
@@ -52,23 +53,5 @@ public class loginScript : MonoBehaviour
                 Debug.Log("Comparación resultante: " + responseText);
             }
         }
-    }
-
-    //Para corregir el formato del JSON
-    public string ModificarCadena(string cadena)
-    {
-        string caracteresPermitidos = "{}\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:,";
-
-        string cadenaModificada = "";
-
-        foreach (char c in cadena)
-        {
-            if (caracteresPermitidos.Contains(c.ToString()))
-            {
-                cadenaModificada += c;
-            }
-        }
-
-        return cadenaModificada;
     }
 }

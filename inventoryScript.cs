@@ -2,64 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class inventoryScript : MonoBehaviour
 {
-    public RawImage rawImage1;
-    public RawImage rawImage2;
-    public RawImage rawImage3;
-    public RawImage rawImage4;
-    public RawImage rawImage5;
-    public RawImage rawImage6;
-    public RawImage rawImage7;
-    public RawImage rawImage8;
-    public RawImage rawImage9;
-    public RawImage rawImage10;
-    public RawImage rawImage11;
-    public RawImage rawImage12;
-    public RawImage rawImage13;
-    public RawImage rawImage14;
-    public RawImage rawImage15;
-    public RawImage rawImage16;
-    public RawImage rawImage17;
-    public RawImage rawImage18;
-    public RawImage rawImage19;
-    public RawImage rawImage20;
-    public RawImage rawImage21;
-    public RawImage rawImage22;
-    public RawImage rawImage23;
-    public RawImage rawImage24;
-    public RawImage rawImage25;
-
-    int d = 11; 
-    public RawImage[] rawImages = new RawImage[25];
-    void Start()
+    public RawImage[] rawImagesArray = new RawImage[25];
+    public TMP_Text[] textArray = new TMP_Text[25];
+    public Texture[] texturesArray = new Texture[30];
+    public string itemsFromCharacterLoader;
+    public GameObject prefabAInstanciar;
+    public GameObject[] Models = new GameObject[25];
+    public void SetItems(string items)
     {
+        itemsFromCharacterLoader = items;
+        loadItems(itemsFromCharacterLoader);
+    }
+    public void loadItems(string items)
+    {
+        Debug.Log("Items desde el script de inventario : " + items);
 
-
-
-
-
-
-
-
-
-        // Asignar imágenes a través del array
-        for (int i = 0; i < d; i++)
+        // Para separar los caracteres
+        string[] parts = items.Split(';');
+        Dictionary<int, int> resultDictionary = new Dictionary<int, int>();
+        foreach (string part in parts)
         {
-            string imagePath = "Assets/images/itemImages/image" + (i + 1); // Suponiendo nombres de imágenes secuenciales (miImagen1, miImagen2, etc.)
-            Texture2D texture = Resources.Load<Texture2D>(imagePath);
-
-            if (texture != null)
+            string[] subParts = part.Split('-');
+            int key, value;
+            if (int.TryParse(subParts[0], out key) && int.TryParse(subParts[1], out value))
             {
-                // Asignar la textura al RawImage correspondiente en el array
-                rawImages[i].texture = texture;
-            }
-            else
-            {
-                Debug.LogError("No se pudo cargar la imagen desde: " + imagePath);
+                resultDictionary.Add(key, value);
             }
         }
+
+        // Para cargar los items
+        int cont = -1;
+        foreach (var pair in resultDictionary)
+        {
+            Debug.Log(pair.Key + " = " + pair.Value);
+            cont++;
+            rawImagesArray[cont].texture = texturesArray[pair.Key];
+            textArray[cont].text = "x" + pair.Value;
+        }
+        
+    }
+    public void spawnItems()
+    {
+        GameObject objetoConNombre = GameObject.Find("NombreDelObjeto");
+        Instantiate(prefabAInstanciar, objetoConNombre.transform.position, Quaternion.identity);
+
+    }
+
+    public GameObject getGameObjectByID(int id)
+    {
+        return null;
     }
 }
+
 

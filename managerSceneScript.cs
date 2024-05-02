@@ -7,7 +7,6 @@ using System.IO;
 
 public class managerSceneScript : MonoBehaviour
 {
-
     public void loadScene(string scene)
     {
         Debug.Log("Cambiando a escena: " + scene);

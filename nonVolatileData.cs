@@ -7,6 +7,7 @@ public class nonVolatileData : MonoBehaviour
     //Esta clase es para guardar variables que no se deben destruir a lo largo del transcurso del programa
 
     private string userDNI = "";
+    private string items = "";
     void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);
@@ -23,5 +24,15 @@ public class nonVolatileData : MonoBehaviour
     public string GetDNI()
     {
         return userDNI;
+    }
+
+    public void SetItems(string theItems)
+    {
+        items = theItems;
+    }
+
+    public string GetItems()
+    {
+        return items;
     }
 }
