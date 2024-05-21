@@ -6,16 +6,11 @@ using System.Text.RegularExpressions;
 public class characterLoaderScript : MonoBehaviour
 {
 
-
     public GameObject maleCharacter;
     public GameObject femaleCharacter;
 
     private string loadCharacterURL = "http://www.ieslassalinas.org/APP/appCargaPersonaje.php";
     private nonVolatileData fakeSingleton = null;
-
-    public RuntimeAnimatorController maleCharacterAnimatorController;
-    public RuntimeAnimatorController femaleCharacterAnimatorController;
-    private RuntimeAnimatorController usedCharacterAnimatorController;
 
     public Material maleMaterial;
     public Material femaleMaterial;
@@ -95,7 +90,6 @@ public class characterLoaderScript : MonoBehaviour
         if (date.sex == 1)
         {
             instantiatedPrefab = Instantiate(maleCharacter, Vector3.zero, Quaternion.identity);
-            usedCharacterAnimatorController = maleCharacterAnimatorController;
             usedMaterial = maleMaterial;
             usedTexture0 = maleTexture0;
             usedTexture1 = maleTexture1;
@@ -104,14 +98,12 @@ public class characterLoaderScript : MonoBehaviour
         else
         {
             instantiatedPrefab = Instantiate(femaleCharacter, Vector3.zero, Quaternion.identity);
-            usedCharacterAnimatorController = femaleCharacterAnimatorController;
             usedMaterial = femaleMaterial;
             usedTexture0 = femaleTexture0;
             usedTexture1 = femaleTexture1;
             usedTexture2 = femaleTexture2;
         }
 
-        instantiatedPrefab.GetComponent<Animator>().runtimeAnimatorController = usedCharacterAnimatorController;
         Vector3 scale = new Vector3(date.scale, date.scale, date.scale);
         instantiatedPrefab.transform.localScale = scale;
 
@@ -131,9 +123,7 @@ public class characterLoaderScript : MonoBehaviour
             usedMaterial.mainTexture = usedTexture2;
             Debug.Log("Se colocó la textura 2");
         }
-        instantiatedPrefab.AddComponent<MeshRenderer>().material = usedMaterial;
-
-        
+        instantiatedPrefab.AddComponent<MeshRenderer>().material = usedMaterial;  
     }
 
     //Para dar formato a la estructura del JSON
