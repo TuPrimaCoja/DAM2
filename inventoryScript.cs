@@ -10,13 +10,12 @@ public class inventoryScript : MonoBehaviour
     public TMP_Text[] textArray = new TMP_Text[25];
     public Texture[] texturesArray = new Texture[30];
     public string itemsFromCharacterLoader;
-    public GameObject prefabAInstanciar;
-    public GameObject[] Models = new GameObject[25];
     public void SetItems(string items)
     {
         itemsFromCharacterLoader = items;
         loadItems(itemsFromCharacterLoader);
     }
+
     public void loadItems(string items)
     {
         Debug.Log("Items desde el script de inventario : " + items);
@@ -34,27 +33,16 @@ public class inventoryScript : MonoBehaviour
             }
         }
 
-        // Para cargar los items
-        int cont = -1;
-        foreach (var pair in resultDictionary)
+        foreach (KeyValuePair<int, int> entry in resultDictionary)
         {
-            Debug.Log(pair.Key + " = " + pair.Value);
-            cont++;
-            rawImagesArray[cont].texture = texturesArray[pair.Key];
-            textArray[cont].text = "x" + pair.Value;
+            int imageIndex = entry.Key;
+            int textureIndex = entry.Value;
+
+            if (imageIndex >= 0 && imageIndex < rawImagesArray.Length && textureIndex >= 0 && textureIndex < texturesArray.Length)
+            {
+                rawImagesArray[imageIndex].texture = texturesArray[textureIndex];
+            }
         }
-        
-    }
-    public void spawnItems()
-    {
-        GameObject objetoConNombre = GameObject.Find("NombreDelObjeto");
-        Instantiate(prefabAInstanciar, objetoConNombre.transform.position, Quaternion.identity);
-
-    }
-
-    public GameObject getGameObjectByID(int id)
-    {
-        return null;
     }
 }
 

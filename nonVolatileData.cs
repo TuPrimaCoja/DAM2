@@ -1,37 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class nonVolatileData : MonoBehaviour
-{
+public class nonVolatileData
+{ 
     //Esta clase es para guardar variables que no se deben destruir a lo largo del transcurso del programa
 
-    private string userDNI = "";
-    private string items = "";
-    void Awake()
-    {
-        DontDestroyOnLoad(transform.gameObject);
-        Debug.Log("Ahora soy eterno!!!!");
-    }
+    public static string userDNI = "";
+    private static string items = "";
 
 
     //Getters y Setters
-    public void SetDNI(string theDni)
+    public static void SetDNI(string theDni)
     {
         userDNI = theDni;
     }
 
-    public string GetDNI()
+    public static string GetDNI()
     {
         return userDNI;
     }
 
-    public void SetItems(string theItems)
+    public static void SetItems(string theItems)
     {
         items = theItems;
     }
 
-    public string GetItems()
+    public static string GetItems()
     {
         return items;
     }

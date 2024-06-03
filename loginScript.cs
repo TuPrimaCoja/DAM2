@@ -10,10 +10,11 @@ using System.Text.RegularExpressions;
 
 public class loginScript : MonoBehaviour
 {
-    [SerializeField] nonVolatileData fakeSingleton;
+    //[SerializeField] nonVolatileData fakeSingleton;
     public TMP_InputField inputField1;
     public TMP_InputField inputField2;
     public string urlValidaUsuario = "http://www.ieslassalinas.org/APP/appValidaUsuario.php";
+
     public void CompareFields()
     {
         StartCoroutine(SendDataToPHP());
@@ -25,7 +26,7 @@ public class loginScript : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("usuario", inputField1.text);
         form.AddField("contrasena", inputField2.text);
-       
+
         using (UnityWebRequest www = UnityWebRequest.Post(urlValidaUsuario, form))
         {
             yield return www.SendWebRequest();
@@ -41,10 +42,9 @@ public class loginScript : MonoBehaviour
                 if (!responseText.Equals("0"))
                 {
                     Debug.Log("Usuario encontrado");
-                    fakeSingleton.SetDNI(inputField1.text);
-                    Debug.Log("NIE: " + fakeSingleton.GetDNI());
+                    nonVolatileData.SetDNI(inputField1.text);
+                    Debug.Log("NIE: " + nonVolatileData.GetDNI());
                     SceneManager.LoadScene("secondMenuScene");
-
                 }
                 else
                 {

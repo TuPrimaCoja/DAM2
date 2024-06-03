@@ -9,7 +9,7 @@ using TMPro;
 
 public class qrScannerScript : MonoBehaviour
 {
-    [SerializeField] nonVolatileData fakeSingleton;
+    //[SerializeField] nonVolatileData fakeSingleton;
     WebCamTexture webcamTexture;
     public TMP_Text qrLabel;
     string QrCode = string.Empty;
@@ -39,8 +39,8 @@ public class qrScannerScript : MonoBehaviour
                     if (!string.IsNullOrEmpty(QrCode))
                     {
                         qrLabel.text = "NIE escaneado : " + QrCode;
-                        fakeSingleton.SetDNI(QrCode);
-                        Debug.Log("NIE (Desde QR): " + fakeSingleton.GetDNI());
+                        nonVolatileData.SetDNI(QrCode);
+                        Debug.Log("NIE (Desde QR): " + nonVolatileData.GetDNI());
                         webcamTexture.Stop();
                         barCodeReader = null;
                         SceneManager.LoadScene("characterScene");
